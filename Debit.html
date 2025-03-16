@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debit - IPPB</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .debit-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        h3 {
+            color: #27ae60;
+            margin-bottom: 20px;
+            text-decoration: underline;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus {
+            border-color: #27ae60;
+        }
+
+        input[type="number"]:disabled {
+            background-color: #f9f9f9;
+            cursor: not-allowed;
+        }
+
+        p {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #219653;
+        }
+
+        .close-button {
+            margin-top: 20px;
+            background-color: #e74c3c;
+        }
+
+        .close-button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <h1>IPPB WELCOMES YOU!</h1>
+    <div class="debit-container">
+        <h3><u>Debit Your Money</u></h3>
+        <input type="number" placeholder="Enter your A/C number" id="acnumber" onkeyup="change()">
+        <p>Note: Account No: 4321</p>
+        <input type="number" placeholder="Enter Amount" id="Amount" disabled>
+        <button onclick="sum()">Enter</button>
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+        <button class="close-button" onclick="get()">Close</button>
+    </div>
+
+    <script>
+        // This function checks if the entered account number is correct.
+        function change() {
+            let val = parseInt(document.getElementById("acnumber").value);
+            if (val === 4321) {  // The valid account number
+                document.getElementById("Amount").disabled = false;  // Enable the amount input
+            } else {
+                document.getElementById("Amount").disabled = true;  // Disable the amount input if account number is wrong
+            }
+        }
+
+        // Retrieve the current balance from localStorage
+        let currentBalance = JSON.parse(localStorage.getItem('Amount')) || 0;
+
+        // This function is called when the user submits the debit amount.
+        function sum() {
+            const debitAmount = +(document.getElementById('Amount').value);  // Get the amount to debit
+
+            // Validate the input amount
+            if (debitAmount > 0) {
+                // Check if the user is not overdrawing the balance
+                if (debitAmount <= currentBalance) {
+                    currentBalance -= debitAmount;  // Subtract the debit amount from the current balance
+                    alert(`$${debitAmount} has been debited from your A/C 987XXXX21`);
+                    alert(`Current Balance is $${currentBalance}.\nRegards!\nIndian Payment Post Bank...`);
+                    localStorage.setItem("Amount", JSON.stringify(currentBalance));  // Save the updated balance to localStorage
+                } else {
+                    alert("Insufficient funds!");  // Alert if the balance is insufficient for the debit
+                }
+            } else {
+                alert("Please enter a valid amount");  // Alert if the entered amount is invalid (less than or equal to zero)
+            }
+        }
+
+        function get() {
+            location.href = 'Home.html';
+        }
+    </script>
+</body>
+</html>
+
